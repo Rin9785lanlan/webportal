@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <div th:replace="common :: common-script"></div>
 <div th:replace="common :: common-head"></div>
@@ -12,8 +13,18 @@
 	<div class="container">
 		<div class="content-box">
 			<h1>住所検索画面</h1>
+			<!-- 基本1件だが、API構造に従い繰り返し構文とする -->
+			<ul th:each="zipcodeData : ${results.list}">
+				<li><span th:text="${zipcodeData.zipcode}"></span></li>
+				<li><span th:text="${zipcodeData.address1}"></span></li>
+				<li><span th:text="${zipcodeData.address2}"></span></li>
+				<li><span th:text="${zipcodeData.address3}"></span></li>
+				<li><span th:text="${zipcodeData.kana1}"></span></li>
+				<li><span th:text="${zipcodeData.kana2}"></span></li>
+				<li><span th:text="${zipcodeData.kana3}"></span></li>
+			</ul>
 		</div>
 	</div>
-	
+
 </body>
 </html>
