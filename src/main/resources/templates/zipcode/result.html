@@ -4,7 +4,9 @@
 
 <div th:replace="common :: common-script"></div>
 <div th:replace="common :: common-head"></div>
-
+<head>
+	<link rel="stylesheet" th:href="@{/css/result.css}" href="../static/css/result.css">
+</head>
 <body>
 
 	<div th:replace="common :: common-nav"></div>
@@ -14,15 +16,45 @@
 		<div class="content-box">
 			<h1>住所検索画面</h1>
 			<!-- 基本1件だが、API構造に従い繰り返し構文とする -->
-			<ul th:each="zipcodeData : ${results.list}">
-				<li><span th:text="${zipcodeData.zipcode}"></span></li>
-				<li><span th:text="${zipcodeData.address1}"></span></li>
-				<li><span th:text="${zipcodeData.address2}"></span></li>
-				<li><span th:text="${zipcodeData.address3}"></span></li>
-				<li><span th:text="${zipcodeData.kana1}"></span></li>
-				<li><span th:text="${zipcodeData.kana2}"></span></li>
-				<li><span th:text="${zipcodeData.kana3}"></span></li>
-			</ul>
+			<table th:each="zipcodeData : ${results.list}">
+				<thead>
+					<tr>
+						<th>項目</th>
+						<th>結果</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>郵便番号</td>
+						<td><span th:text="${zipcodeData.zipcode}"></span></td>
+					</tr>
+					<tr>
+						<td>都道府県</td>
+						<td><span th:text="${zipcodeData.address1}"></span></td>
+					</tr>
+					<tr>
+						<td>市区町村</td>
+						<td><span th:text="${zipcodeData.address2}"></span></td>
+					</tr>
+					<tr>
+						<td>番地</td>
+						<td><span th:text="${zipcodeData.address3}"></span></td>
+					</tr>
+					<tr>
+						<td>都道府県カナ</td>
+						<td><span th:text="${zipcodeData.kana1}"></span></td>
+					</tr>
+					<tr>
+						<td>市区町村カナ</td>
+						<td><span th:text="${zipcodeData.kana2}"></span></td>
+					</tr>
+					<tr>
+						<td>番地カナ</td>
+						<td><span th:text="${zipcodeData.kana3}"></span></td>
+					</tr>
+				</tbody>
+				<br>
+			</table>
 		</div>
 	</div>
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<div th:replace="common :: common-script"></div>
+<div th:replace="common :: common-head"></div>
+<head>
+<link rel="stylesheet" th:href="@{/css/result.css}"
+	href="../static/css/result.css">
+<script type="text/javascript" src="../static/js/index.js"></script>
+</head>
+<body>
+
+	<div th:replace="common :: common-nav"></div>
+
+	<!-- コンテンツ -->
+	<div class="container">
+		<div class="content-box">
+			<h1>天気予報表示画面</h1>
+			<!-- 基本1件だが、API構造に従い繰り返し構文とする -->
+			<table class="weather-table"
+				th:each="forecast : ${weatherEntity.forecasts}">
+				<thead>
+					<tr>
+						<th><span th:text = "${weatherEntity.locationName}">の</span><span th:text="${forecast.dateLabel}"></span>の天気予報
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span th:text="${forecast.telop}"></span><br>
+						<img th:src="${forecast.image}"></img></td>
+					</tr>
+				</tbody>
+				<br>
+			</table>
+		</div>
+	</div>
+	
+	<div class="description"><span th:text = "${weatherEntity.description}"></span></div>
+</body>
+</html>
