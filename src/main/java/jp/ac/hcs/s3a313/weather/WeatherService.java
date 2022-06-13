@@ -31,8 +31,6 @@ public class WeatherService {
 	/** エンドポイント */
 	private static final String URL = "https://weather.tsukumijima.net/api/forecast?city={cityCode}";
 
-	private static final String SAPPORO = "016010";
-
 	/**
 	 * 都市コードから検索結果形式に変換します。
 	 *
@@ -48,10 +46,8 @@ public class WeatherService {
 		WeatherEntity weatherEntity = new WeatherEntity();
 		// レスポンスを結果(箱)に変換
 		convert(json, weatherEntity);
-
-		// 地域名を設定
+		
 		weatherEntity.toLocationName(cityCode);
-
 		return weatherEntity;
 	}
 
@@ -63,10 +59,10 @@ public class WeatherService {
 		try {
 			// レスポンス(json)を構造体へ変換
 			JsonNode node = mapper.readTree(json);
-			
-			//天気予報概要
+
+			// 天気予報概要
 			weatherEntity.setDescription(node.get("description").get("text").asText());
-			
+
 			// 「forecasts」ノード(配列)を取得し繰り返す
 			for (JsonNode forecast : node.get("forecasts")) {
 				WeatherData data = new WeatherData();
@@ -77,7 +73,7 @@ public class WeatherService {
 				// 配列の末尾に追加
 				weatherEntity.getForecasts().add(data);
 			}
-			
+
 		} catch (IOException e) {
 			weatherEntity.setErrorMessage("通信に失敗しました");
 		}
