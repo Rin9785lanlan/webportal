@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<div th:replace="common :: common-script"></div>
+<div th:replace="common :: common-head"></div>
+
+<script type="text/javascript" src="../static/js/index.js"></script>
+
+<body>
+
+	<div th:replace="common :: common-nav"></div>
+
+	<!-- contents -->
+	<div class="container">
+		<div class="content-box">
+			<h2>
+				「<span th:text="${shopEntity.searchWord}"></span>」の検索結果
+			</h2>
+
+			<div th:each="shop : ${shopEntity.shops}">
+				<ul>
+				
+					<li><img class="shopimage" th:src="${shop.image}"></li>
+					<li><a th:text="${shop.name}" th:href="${shop.url}"></a></li>
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
