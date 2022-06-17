@@ -31,20 +31,19 @@ public class TaskRepository {
 	private static final String SQL_SELECT_ALL = "SELECT * FROM task_t WHERE user_id =:userId order by limitday";
 	
 	/**SQL　１件追加*/
-	private static final String SQL_INSERT_ONE = "INSERT INTO task_t(id,user_id,title,limitday,complte) VALUE ((SELECT MAX(id) + 1 FROM task_t),:userId,:userId,:title,:limitday,false";
+	private static final String SQL_INSERT_ONE = "INSERT INTO task_t(id,user_id,title,limitday,complate) VALUES ((SELECT MAX(id) + 1 FROM task_t),:userId, :title, :limitday, false)";
 	
 	/**SQL　１件削除*/
-	private static final String SQL_DELETE_ONE = "DELETE FROM task_k WHERE id = :id";
+	private static final String SQL_DELETE_ONE = "DELETE FROM task_t WHERE id = :id";
 	
 	/**SQL　１件更新*/
-	private static final String SQL_UPDATE_ONE = "UPDATE task_k SET complate = true WHERE id = :id";
+	private static final String SQL_UPDATE_ONE = "UPDATE task_t SET complate = true WHERE id = :id";
 	
 	/**予測更新件数(ハードコーティング防止用）*/
 	private static final int EXPECTD_UPDATE_COUNT = 1;
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
-	
 	/**
 	 * 指定したユーザIDに合致するタスク情報を全権取得します
 	 * 
@@ -79,7 +78,6 @@ public class TaskRepository {
 		params.put("userId",taskData.getUserId());
 		params.put("title",taskData.getTitle());
 		params.put("limitday",taskData.getLimitday());
-		
 		int updateRow = jdbc.update(SQL_INSERT_ONE, params);
 		if (updateRow != EXPECTD_UPDATE_COUNT) {
 			//更新件数が異常な場合

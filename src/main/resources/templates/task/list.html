@@ -13,7 +13,12 @@
 
 	<!-- コンテンツ -->
 	<div class="container">
-
+		<div class="errorMessage alert alert-primary" th:if="${taskEntity.errorMessage != null and taskEntity.result == 1 }" role="alert">
+			<span th:text="${taskEntity.errorMessage}"></span></div>
+			
+		<div class="errorMessage alert alert-danger" th:if="${taskEntity.errorMessage != null and taskEntity.result == 0}"role="alert">
+			<span th:text="${taskEntity.errorMessage}"></span></div>
+			
 		<div class="content-box">
 			<h2>タスク管理</h2>
 
@@ -21,9 +26,10 @@
 
 			<form method="post" th:action="@{/task/insert}">
 				<div class="input-group">
-					<input type="text" class="form-control" name="title" placeholder="タスク内容">
-					<input type="date" class="form-control" name="limit">
-					<span class="input-group-btn">
+					<input type="text" class="form-control" name="title"
+						placeholder="タスク内容"> <input type="date"
+						class="form-control" name="limit"> <span
+						class="input-group-btn">
 						<button id="submit" type="submit" class="btn btn-warning">追加</button>
 					</span>
 				</div>
@@ -32,33 +38,35 @@
 			<hr>
 
 			<table class="table table-light">
-					<thead>
-						<tr>
-							<th scope="col">タイトル</th>
-							<th scope="col">期限日</th>
-							<th scope="col"></th>
-							<th scope="col"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="task : ${taskEntity.taskList}">
-							<td th:text="${task.title}">タイトル</td>
-							<td th:text="${task.limitday}">2020/11/11</td>
-							<td>
-								<form method="post" th:action="@{/task/delete}">
-									<input type="hidden" th:value="${task.id}" name="id" id="delete">
-									<button type="submit" class="btn btn-danger">削除</button>
-								</form>
-							</td>
-							<td>
-								<form method="post" th:action="@{/task/complate}" th:if="${!task.isComplate}">
-									<input type="hidden" th:value="${task.id}" name="id" id="complate">
-									<button type="submit" class="btn btn-primary">完了</button>
-								</form>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<thead>
+					<tr>
+						<th scope="col">タイトル</th>
+						<th scope="col">期限日</th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="task : ${taskEntity.taskList}">
+						<td th:text="${task.title}">タイトル</td>
+						<td th:text="${task.limitday}">2020/11/11</td>
+						<td>
+							<form method="post" th:action="@{/task/delete}">
+								<input type="hidden" th:value="${task.id}" name="id" id="delete">
+								<button type="submit" class="btn btn-danger">削除</button>
+							</form>
+						</td>
+						<td>
+							<form method="post" th:action="@{/task/complate}"
+								th:if="${!task.isComplate}">
+								<input type="hidden" th:value="${task.id}" name="id"
+									id="complate">
+								<button type="submit" class="btn btn-primary">完了</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
 			<form method="post" th:action="@{/task/csv}">
 				<button type="submit" class="btn btn-success btnx-lime">CSV出力</button>

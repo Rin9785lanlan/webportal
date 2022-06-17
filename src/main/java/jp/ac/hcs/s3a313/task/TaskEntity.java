@@ -22,5 +22,8 @@ public class TaskEntity {
 	
 	/** エラーメッセージ(表示用) */
 	private String errorMessage;
+	
+	/**結果*/
+	private int result;
 
 }
