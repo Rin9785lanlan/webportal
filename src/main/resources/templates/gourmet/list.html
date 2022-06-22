@@ -19,12 +19,12 @@
 			</h2>
 
 			<div th:each="shop : ${shopEntity.shops}">
-				<ul>
-				
-					<li><img class="shopimage" th:src="${shop.image}"></li>
-					<li><a th:text="${shop.name}" th:href="${shop.url}"></a></li>
-					
-				</ul>
+				<table class="table table-light">
+					<tr>
+						<td><img class="shopimage" th:src="${shop.image}"></td>
+						<td><a th:text="${shop.shopname}" th:href="${shop.url}"></a></td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

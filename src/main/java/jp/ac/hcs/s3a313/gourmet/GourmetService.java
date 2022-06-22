@@ -1,11 +1,14 @@
 package jp.ac.hcs.s3a313.gourmet;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * グルメ検索機能の業務ロジックを処理します。
@@ -21,7 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class GourmetService {
 
 	/** リクルート APIキー ※取扱注意 */
-	private static final String API_KEY = "2613d3277469ede5";
+	private static final String API_KEY = "0b7e685bff386cca";
 
 	/** グルメサーチAPI リクエストURL */
 	private static final String URL =
@@ -32,24 +35,38 @@ public class GourmetService {
 	
 	public ShopEntity execute(String shopname, String large_service_area) {
 
-		ShopEntity shopEntity = new ShopEntity();
+		String json = request(shopname, large_service_area);
 
-		// TODO
+		ShopEntity shopEntity = new ShopEntity();
+		
+		convert(shopname, json, shopEntity);
 
 		return shopEntity;
 	}
-
 	private void convert(String shopname, String json, ShopEntity shopEntity) {
 		
 		shopEntity.setSearchWord(shopname);
 
-		// TODO
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode node = mapper.readTree(json);
+
+			for (JsonNode shop : node.get("results").get("shop")) {
+
+				ShopData shopData = extracted(shop);
+				shopEntity.getShops().add(shopData);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private ShopData extracted(JsonNode shop) {
 		ShopData shopData = new ShopData();
-		
-		// TODO
+		shopData.setShopname(shop.get("name").asText());
+		shopData.setImage(shop.get("logo_image").asText());
+		shopData.setUrl(shop.get("urls").get("pc").asText());
 		
 		return shopData;
 	}

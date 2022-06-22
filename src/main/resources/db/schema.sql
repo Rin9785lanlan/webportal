@@ -10,3 +10,12 @@ CREATE TABLE IF NOT EXISTS task_t (
   limitday DATE,
   complate BOOLEAN
 );
+
+/* ユーザマスタ */
+CREATE TABLE IF NOT EXISTS user_m (
+    user_id VARCHAR(50) PRIMARY KEY,
+    encrypted_password VARCHAR(100),
+    user_name VARCHAR(50),
+    role VARCHAR(50),
+    enabled BOOLEAN
+);

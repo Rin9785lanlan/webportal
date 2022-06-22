@@ -40,8 +40,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 		public String postGourmet(@RequestParam("shopname") String shopname,
 								@RequestParam("areaCode") String areaCode,
 				Principal principal, Model model) {
-
-			// TODO
+			// 結果を取得
+			ShopEntity shopEntity = gourmetService.execute(shopname,areaCode);
+			// 結果を画面に設定
+			model.addAttribute("shopEntity", shopEntity);
 			
 			return "gourmet/list";
 		}

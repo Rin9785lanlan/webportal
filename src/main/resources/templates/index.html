@@ -28,14 +28,14 @@
 					</form>
 				</div>
 			</div>
-			
+
 			<div class="col-sm-6">
 				<div class="content-box">
 					<h2>天気予報</h2>
 					<form method="post" th:action="@{/weather}">
 						<div class="input-group">
 							<input type="number" class="form-control" name="citycode"
-							placeholder="地域コード: XXXXXX"> <span
+								placeholder="地域コード: XXXXXX"> <span
 								class="input-group-btn weather-button">
 								<button id="weather" type="submit"
 									class="btn btn-success btnx-lime-non weather">表示</button>
@@ -51,14 +51,48 @@
 					<form method="post" th:action="@{/task}">
 						<div class="input-group">
 							<span class="input-group-btn task-button">
-								<button id="task" type="submit"
-									class="btn btn-success btnx-lime-non task">タスク管理へ</button>
+								<button type="submit"
+									class="btn btn-success btnx-lime-non">タスク管理へ</button>
 							</span>
 						</div>
 					</form>
 				</div>
 			</div>
 
+			<div class="col-sm-6">
+				<div class="content-box">
+					<h2>飲食店検索</h2>
+					<form method="get" th:action="@{/gourmet}">
+						<div class="input-group">
+							<select class="form-control" name="areaCode">
+								<option value="SS10">関東</option>
+								<option value="SS20">関西</option>
+								<option value="SS30">東海</option>
+								<option value="SS40" selected="selected">北海道</option>
+								<option value="SS50">東北</option>
+								<option value="SS60">北陸・甲信越</option>
+								<option value="SS70">中国</option>
+								<option value="SS80">四国</option>
+								<option value="SS90">九州・沖縄</option>
+							</select> <input type="text" class="form-control" name="shopname"
+								placeholder="グルメを検索してください">
+							<button id="weather" type="submit"
+								class="btn btn-success btnx-lime-non">検索</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6" role="presentation"
+			sec:authorize="hasRole('ADMIN') or hasRole('TOP')">
+			<!-- 管理者と上位のみのコンテンツ -->
+			<div class="content-box">
+				<h2>ユーザ管理</h2>
+				<form method="get" th:action="@{/user/list}">
+					<button type="submit" class="btn btn-success btnx-lime-non">ユーザ管理へ</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>
