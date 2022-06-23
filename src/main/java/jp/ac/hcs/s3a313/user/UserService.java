@@ -28,23 +28,20 @@ public class UserService {
 	}
 	
 
-	public boolean insertOne(UserForm form) {
-		boolean resultSet;
+	public int insertOne(UserForm form) {
+		int resultSet;
 		//ユーザ情報の設定
 		UserData addData = new UserData();
-		addData.setUser_name(form.getUsername());
 		addData.setUserId(form.getUserId());
+		addData.setUser_name(form.getUsername());
 		addData.setPassword(form.getPassword());
-		addData.setEnabled(true);
 		addData.setRole(form.getRole());
 		
 		try {
-			userRepository.insert(addData);
-			resultSet = true;
-			System.out.println("成功");
+			resultSet = userRepository.insert(addData);
 		} catch (QueryTimeoutException e) {
-			// falseを設定
-			resultSet = false;
+			// 0を設定
+			resultSet = 0;
 			
 		}
 		return resultSet;

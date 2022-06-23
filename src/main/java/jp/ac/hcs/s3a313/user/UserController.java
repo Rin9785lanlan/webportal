@@ -60,8 +60,8 @@ public class UserController {
 		if (bindResult.hasErrors()) {
 			return getUserCreate(form, model);
 		}
-		boolean isSuceess = userService.insertOne(form);
-		if (isSuceess) {
+		int isSuceess = userService.insertOne(form);
+		if (isSuceess == 1) {
 			model.addAttribute("message", "ユーザを登録しました");
 		} else {
 			model.addAttribute("errorMessage", "ユーザ登録に失敗しました。操作をやり直してください");

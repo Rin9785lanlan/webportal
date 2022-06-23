@@ -33,6 +33,10 @@ public class UserRepository {
 	/** SQL 全件取得（ユーザID昇順） */
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user_m order by user_id";
 
+	/**SQL　１件追加*/
+	private static final String SQL_INSERT_ONE = "INSERT INTO user_m (user_id, encrypted_password, user_name, role, enabled) VALUES(:userId,:encrypted_password ,:user_name,:role, true);";
+	
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
 	@Autowired
@@ -62,14 +66,17 @@ public class UserRepository {
 	 * @param userData ユーザ情報(null不可)
 	 * @ruturn 更新件数
 	 * */
-	public void insert(UserData userData) {
+	public int insert(UserData userData) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", userData.getUserId());
 		String password = passwordEncoder.encode(userData.getPassword());
-		params.put("password", password);
-		params.put("username", userData.getUser_name());
+		params.put("encrypted_password", password);
+		params.put("user_name", userData.getUser_name());
 		params.put("role", userData.getRole());
-		params.put("enabled",userData.isEnabled());
 		
+		// ユーザ情報の追加処理を実行
+		int result = jdbc.update(SQL_INSERT_ONE, params);
+		
+		return result;
 	}
 }
