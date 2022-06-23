@@ -27,7 +27,7 @@ public class UserController {
 	 * @return ユーザ管理画面へのパス(null不可)
 	 */
 	@GetMapping("/user/list")
-	public String getUserList(UserForm userForm, Model model) {
+	public String getUserList(Model model) {
 
 		// 結果を取得
 		UserEntity userEntity = userService.selectAll();
@@ -48,7 +48,10 @@ public class UserController {
 	 * @return ユーザ管理画面へのパス(null不可)
 	 */
 	@GetMapping("/user/insert")
-	public String getUserCreate(Model model) {
+	public String getUserCreate(UserForm userForm,Model model) {
+		//前回の入力内容を設定
+		model.addAttribute("userForm",userForm);
+		return "user/insert";
 	}
 
 	@PostMapping("/user/insert")

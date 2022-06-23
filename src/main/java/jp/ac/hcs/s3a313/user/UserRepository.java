@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -34,6 +35,8 @@ public class UserRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	/**
 	 * 全ユーザを取得します。
@@ -50,5 +53,23 @@ public class UserRepository {
 		List<Map<String, Object>> resultList = jdbc.queryForList(SQL_SELECT_ALL, params);
 		return resultList;
 	}
-
+	
+	/**
+	 * ユーザ情報を1件登録します
+	 * <p>更新件数が異常な場合は例外が発生します
+	 * 
+	 * @exception IncorrtionResultSizeDataAccessException 更新件数が異常な場合
+	 * @param userData ユーザ情報(null不可)
+	 * @ruturn 更新件数
+	 * */
+	public void insert(UserData userData) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userId", userData.getUserId());
+		String password = passwordEncoder.encode(userData.getPassword());
+		params.put("password", password);
+		params.put("username", userData.getUser_name());
+		params.put("role", userData.getRole());
+		params.put("enabled",userData.isEnabled());
+		
+	}
 }

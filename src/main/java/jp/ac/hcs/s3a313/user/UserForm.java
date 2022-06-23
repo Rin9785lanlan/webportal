@@ -22,8 +22,17 @@ public class UserForm {
 	@Email(message = "{email_cheak}")
 	private String userId;
 
-	/** ユーザID （メールアドレス） */
+	/** パスワード */
 	@NotBlank(message = "{require_chaek}")
-	@Length(min=6,max=100,message="{length_check}")
+	@Length(min = 6, max = 100, message = "{length_check}")
 	private String password;
+
+	/** ユーザ名 */
+	@NotBlank(message = "{require_chaek}")
+	@Length(min = 2, max = 50, message = "{length_check}")
+	private String username;
+
+	/** 権限 */
+	@NotBlank(message = "{require_chaek}")
+	private String role;
 }
