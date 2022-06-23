@@ -4,18 +4,25 @@
 
 <div th:replace="common :: common-script"></div>
 <div th:replace="common :: common-head"></div>
+<script type="text/javascript" th:src="@{/js/dialog.js}"></script>
 <body>
 
 	<div th:replace="common :: common-nav"></div>
 
 	<!-- コンテンツ -->
 	<div class="container">
-		<div class="errorMessage alert alert-primary" th:if="${taskEntity.errorMessage != null and taskEntity.result == 1 }" role="alert">
-			<span th:text="${taskEntity.errorMessage}"></span></div>
-			
-		<div class="errorMessage alert alert-danger" th:if="${taskEntity.errorMessage != null and taskEntity.result == 0}"role="alert">
-			<span th:text="${taskEntity.errorMessage}"></span></div>
-			
+		<div class="errorMessage alert alert-primary"
+			th:if="${taskEntity.errorMessage != null and taskEntity.result == 1 }"
+			role="alert">
+			<span th:text="${taskEntity.errorMessage}"></span>
+		</div>
+
+		<div class="errorMessage alert alert-danger"
+			th:if="${taskEntity.errorMessage != null and taskEntity.result == 0}"
+			role="alert">
+			<span th:text="${taskEntity.errorMessage}"></span>
+		</div>
+
 		<div class="content-box">
 			<h2>タスク管理</h2>
 
@@ -48,7 +55,8 @@
 						<td th:text="${task.title}">タイトル</td>
 						<td th:text="${task.limitday}">2020/11/11</td>
 						<td>
-							<form method="post" th:action="@{/task/delete}" onSubmit="check();">
+							<form method="post" th:action="@{/task/delete}"
+								onSubmit="check();">
 								<input type="hidden" th:value="${task.id}" name="id" id="delete">
 								<button type="submit" class="btn btn-danger delete-action">削除</button>
 							</form>
