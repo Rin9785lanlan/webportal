@@ -2,37 +2,33 @@ package jp.ac.hcs.s3a313.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Data;
 
-/**
- * ユーザ作成画面の入力値を保持するクラスです
- * <p>
- * 各項目のデータ使用は基本設計書を参照してください
- * 
- * @author s20203053
- *
- */
 @Data
-public class UserForm {
+public class UpdateUserForm {
 	/** ユーザID （メールアドレス） */
 	@NotBlank(message = "{require_chaek}")
 	@Email(message = "{email_cheak}")
 	private String userId;
-
-	/** パスワード */
-	@NotBlank(message = "{require_chaek}")
-	@Length(min = 6, max = 100, message = "{length_check}")
-	private String password;
 
 	/** 名前 */
 	@NotBlank(message = "{require_chaek}")
 	@Length(min = 2, max = 50, message = "{length_check}")
 	private String username;
 
+	/** パスワード */
+	//TODO
+	private String password;
+	
 	/** 権限 */
-	@NotBlank(message = "{require_chaek}")
+	@Pattern(regexp="^(ROLE_ADMIN|ROLE_TOP|ROLE_GENERAL)$")
 	private String role;
+	
+	/** 有効性*/
+	@Pattern(regexp="^(true|false)$")
+	private String enabled;
 }

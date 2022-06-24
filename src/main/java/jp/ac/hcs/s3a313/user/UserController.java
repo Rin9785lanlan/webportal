@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -67,5 +68,23 @@ public class UserController {
 			model.addAttribute("errorMessage", "ユーザ登録に失敗しました。操作をやり直してください");
 		}
 		return getUserList(model);
+	}
+	
+	/**
+	 * 【管理者】ユーザ詳細画面を表示します。
+	 *
+	 * @param updateUserForm ユーザ更新の入力値(null不可)
+	 * @param userId ユーザID(null不可)
+	 * @param model Viewに値を渡すオブジェクト(null不可)
+	 * @return ユーザ詳細画面(null不可)
+	 */
+	@GetMapping("/user/detail")
+	public String getUserDetail(UpdateUserForm updateUserForm, @RequestParam(name = "userId")
+			String userId, Model model) {
+
+		userService.getUser(userId, updateUserForm);
+		model.addAttribute("UpdateUserForm", updateUserForm);
+
+		return "user/detail";
 	}
 }

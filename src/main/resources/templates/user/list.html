@@ -28,13 +28,13 @@
 					<th class="table-dark"></th>
 				</tr>
 				<tr th:each="user : ${userEntity.userlist}" th:object="${user}">
-					<td class="table-light" th:text="*{userId}"></td>
+					<td class="table-light" th:text="*{userId}" ></td>
 					<td class="table-light" th:text="*{user_name}"></td>
 					<td class="table-light" th:text="*{enabled}"></td>
 					<td class="table-light" th:text="*{role}"></td>
 					<td class="table-light">
 						<form method="get" th:action="@{/user/detail}">
-							<input type="hidden" th:value="*{userId}">
+							<input type="hidden" th:value="*{userId}" name = "userId">
 							<button type="submit" class="btn btn-success btnx-lime-non">詳細</button>
 						</form>
 					</td>

@@ -32,6 +32,9 @@ public class UserRepository {
 
 	/** SQL 全件取得（ユーザID昇順） */
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user_m order by user_id";
+	
+	/** SQL 1件取得（ユーザID昇順） */
+	private static final String SQL_SELECT_ONE = "SELECT * FROM user_m WHERE user_id =:userId";
 
 	/**SQL　１件追加*/
 	private static final String SQL_INSERT_ONE = "INSERT INTO user_m (user_id, encrypted_password, user_name, role, enabled) VALUES(:userId,:encrypted_password ,:user_name,:role, true);";
@@ -55,6 +58,20 @@ public class UserRepository {
 
 		// 埋め込む値が存在しないため、空のMapを生成
 		List<Map<String, Object>> resultList = jdbc.queryForList(SQL_SELECT_ALL, params);
+		return resultList;
+	}
+	
+	/**
+	 * 指定のユーザを取得します。
+	 *
+	 *
+	 * @return 1件のユーザレコードの配列
+	 */
+	public List<Map<String, Object>> selectOne(String UserId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userId", UserId);
+		// 埋め込む値が存在しないため、空のMapを生成
+		List<Map<String, Object>> resultList = jdbc.queryForList(SQL_SELECT_ONE, params);
 		return resultList;
 	}
 	
