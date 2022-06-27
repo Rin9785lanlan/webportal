@@ -39,6 +39,12 @@ public class UserRepository {
 	/**SQL　１件追加*/
 	private static final String SQL_INSERT_ONE = "INSERT INTO user_m (user_id, encrypted_password, user_name, role, enabled) VALUES(:userId,:encrypted_password ,:user_name,:role, true);";
 	
+	/**SQL　１件更新*/
+	private static final String SQL_UPDATE_ONE = "UPDATE user_m SET encrypted_password = :password, user_name = :username, role = :role, enabled = :enabled WHERE user_id = :userid;";
+	
+	/**SQL　１件更新(パスワードなし)*/
+	private static final String SQL_UPDATE_NULL_PASSWORD = "UPDATE user_m SET user_name = :username, role = :role, enabled = :enabled WHERE user_id = :userid;";
+	
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
@@ -94,6 +100,48 @@ public class UserRepository {
 		// ユーザ情報の追加処理を実行
 		int result = jdbc.update(SQL_INSERT_ONE, params);
 		
+		return result;
+	}
+	
+	/**
+	 * ユーザ情報を1件更新します
+	 * <p>パスワードなし
+	 * <p>更新件数が異常な場合は例外が発生します
+	 * 
+	 * @exception IncorrtionResultSizeDataAccessException 更新件数が異常な場合
+	 * @param userData ユーザ情報(null不可)
+	 * @ruturn 更新件数
+	 * */
+	public int updateWithoutPassword(UserData userData) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userid", userData.getUserId());
+		params.put("username", userData.getUser_name());
+		params.put("role", userData.getRole());
+		params.put("enabled", userData.isEnabled());
+		
+		int result = jdbc.update(SQL_UPDATE_NULL_PASSWORD, params);
+		return result;
+	}
+	
+	/**
+	 * ユーザ情報を1件更新します
+	 * <p>更新件数が異常な場合は例外が発生します
+	 * 
+	 * @exception IncorrtionResultSizeDataAccessException 更新件数が異常な場合
+	 * @param userData ユーザ情報(null不可)
+	 * @ruturn 更新件数
+	 * */
+	public int updateWithPassword(UserData userData) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userid", userData.getUserId());
+		String password = passwordEncoder.encode(userData.getPassword());
+		params.put("password", password);
+		params.put("username", userData.getUser_name());
+		params.put("role", userData.getRole());
+		params.put("enabled", userData.isEnabled());
+		
+		// ユーザ情報の追加処理を実行
+		int result = jdbc.update(SQL_UPDATE_ONE, params);
 		return result;
 	}
 }

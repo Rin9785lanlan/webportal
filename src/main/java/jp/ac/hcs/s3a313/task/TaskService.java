@@ -1,5 +1,10 @@
 package jp.ac.hcs.s3a313.task;
 
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,8 +15,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.QueryTimeoutException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import jp.ac.hcs.s3a313.WebConfig;
 
 /**
  * タスク機能の業務ロジックを処理します。
@@ -33,6 +43,8 @@ public class TaskService {
 
 	@Autowired
 	private TaskRepository taskRepository;
+	
+	private static String OUTPUT_FULLPATH = WebConfig.OUTPUT_PATH + WebConfig.FILENAME_TASK_CSV;
 
 	/**
 	 * ユーザIDに合致するタスク一覧を取得します。
@@ -185,6 +197,42 @@ public class TaskService {
 			entity.getTaskList().add(data);
 		}
 		return entity;
+	}
+
+	/**
+	 * タスクをCSVファイルに出力します。
+	 * 
+	 * <p>
+	 * 条件に合致するタスクがない場合は、空のファイルが出力されます。
+	 * 
+	 * @param userId ユーザID(null不可)
+	 */
+	public ResponseEntity<byte[]> taskListCsvOut(String userId) {
+
+		taskRepository.fileOut(userId);
+
+		byte[] bytes = null;
+		try {
+			// CSVファイルをサーバから読み込み
+			bytes = getFile(OUTPUT_FULLPATH);
+		} catch (IOException e) {
+			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		// CSVファイルのダウンロード用ヘッダー情報設定
+		HttpHeaders header = new HttpHeaders();
+		header.add("Content-Type", "text/csv; charset=UTF-8");
+		header.setContentDispositionFormData("filename", WebConfig.FILENAME_TASK_CSV);
+
+		return new ResponseEntity<byte[]>(bytes, header, HttpStatus.OK);
+
+	}
+
+	private byte[] getFile(String fileName) throws IOException {
+		FileSystem fs = FileSystems.getDefault();
+		Path p = fs.getPath(fileName);
+		byte[] bytes = Files.readAllBytes(p);
+		return bytes;
 	}
 
 }

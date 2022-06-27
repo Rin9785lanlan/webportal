@@ -84,7 +84,37 @@ public class UserController {
 
 		userService.getUser(userId, updateUserForm);
 		model.addAttribute("UpdateUserForm", updateUserForm);
-
 		return "user/detail";
+	}
+	
+	/**
+	 * 【管理者】ユーザ詳細画面を表示します。
+	 *
+ 	 * <p>本機能は、ユーザ管理機能の更新機能を提供します。
+	 * <p><strong>この機能は管理者ロールのユーザのみが利用できます</strong>
+	 *
+	 * @param updateUserForm ユーザ更新の入力値(null不可)
+	 * @param bindingResult バリデーションの結果(null不可)
+	 * @param principal ログイン情報(null不可)
+	 * @param model Viewに値を渡すオブジェクト(null不可)
+	 * @return ユーザ一覧画面(null不可)
+	 */
+	@PostMapping("/user/update")
+	public String updateUser(@ModelAttribute @Validated UpdateUserForm updateUserForm,
+			BindingResult bindingResult, Model model) {
+
+		// 入力チェックでエラーの場合、前の画面に戻る
+		if (bindingResult.hasErrors()) {
+			return getUserDetail(updateUserForm, updateUserForm.getUserId(), model);
+		}
+
+		boolean isSuceess = userService.updateOne(updateUserForm);
+		if (isSuceess) {
+			model.addAttribute("message", "ユーザを更新しました");
+		} else {
+			model.addAttribute("errorMessage", "ユーザ更新に失敗しました。操作をやり直してください。");
+		}
+
+		return getUserList(model);
 	}
 }

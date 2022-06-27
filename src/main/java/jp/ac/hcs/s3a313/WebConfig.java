@@ -17,6 +17,12 @@ import org.springframework.web.client.RestTemplate;
  * */
 @Configuration
 public class WebConfig {
+	
+	/** ファイル出力パス */
+	public static final String OUTPUT_PATH = "target/";
+	
+	/** CSVファイル名 */
+	public static final String FILENAME_TASK_CSV = "tasklist.csv";
 	/**
 	 * RestTemplateライブラリのインスタンスを生成します
 	 * 

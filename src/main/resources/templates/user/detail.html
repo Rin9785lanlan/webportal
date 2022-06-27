@@ -32,8 +32,8 @@
 
 					<label class="fw-bold" for="user_name">ユーザ名</label>
 					<div class="form-group input-box position-relative">
-						<input type="text" class="form-control" name="user_name" th:field="*{user_name}" th:classappend="${#fields.hasErrors('user_name')} ? 'is-invalid'">
-						<div class="invalid-tooltip" th:if="${#fields.hasErrors('user_name')}" th:errors="*{user_name}"></div>
+						<input type="text" class="form-control" name="user_name" th:field="*{username}" th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'">
+						<div class="invalid-tooltip" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
 					</div>
 
 					<label class="fw-bold" for="role">権限設定</label>

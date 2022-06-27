@@ -3,6 +3,7 @@ package jp.ac.hcs.s3a313.task;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,5 +68,22 @@ public class TaskController {
 		model.addAttribute("taskEntity", taskEntity);
 		
 		return "task/list";
+	}
+	
+	/**
+	 * ログイン中のユーザに紐づく、タスクを全件CSVファイルに出力します。
+	 * 
+	 * <p>本機能は、タスク管理機能のCSV出力機能を提供します。
+	 * 
+	 * @param principal ログイン中のユーザ情報を格納(null不可)
+	 * @param model Viewに値を渡すオブジェクト(null不可)
+	 * @return CSVファイル
+	 */
+	@PostMapping("/task/csv")
+	public ResponseEntity<byte[]> getTaskCsv(Principal principal, Model model) {
+		// CSVファイルをサーバ上に作成
+		ResponseEntity<byte[]> csv = taskService.taskListCsvOut(principal.getName());
+		// CSVファイルを端末へ送信
+		return csv;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.dao.QueryTimeoutException;
 import org.springframework.stereotype.Service;
 
@@ -98,5 +99,49 @@ public class UserService {
 			updateUserForm.setRole((String) map.get("role"));
 			updateUserForm.setEnabled(String.valueOf(map.get("enabled")));
 		}
+	}
+	
+	/**
+	 * ユーザ情報を１件更新します。
+	 *
+	 * <p>呼び出し元はBooleanの戻り値にて、処理の結果を判定することができます。
+	 *
+	 * @param userData ユーザ情報(null不可)
+	 * @return 正常終了の場合はtrue, その他の場合はfalse
+	 */
+	public boolean updateOne(UpdateUserForm userDataForm) {
+		UserData userData = refillToData(userDataForm);
+		try {
+			// パスワードが空文字であるかを判定
+			if(userData.getPassword().isBlank()) {
+				userRepository.updateWithoutPassword(userData);
+			} else {
+				userRepository.updateWithPassword(userData);
+			}
+		} catch(IncorrectResultSizeDataAccessException e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * UpdateUserFormをTaskDataへ変換します。
+	 *
+	 * <p><strong>このメソッドは入力チェックを実施したうえで呼び出すこと</strong>
+	 * @param updateUserForm 入力データ(null不可)
+	 * @return userData ユーザ情報
+	 */
+	private UserData refillToData(UpdateUserForm updateUserForm) {
+		UserData userData = new UserData();
+		userData.setUserId(updateUserForm.getUserId());
+		userData.setPassword(updateUserForm.getPassword());
+		userData.setUser_name(updateUserForm.getUsername());
+		userData.setRole(updateUserForm.getRole());
+
+		// boolean型へ変換
+		boolean isEnabled = Boolean.valueOf(updateUserForm.getEnabled());
+		userData.setEnabled(isEnabled);
+
+		return userData;
 	}
 }
