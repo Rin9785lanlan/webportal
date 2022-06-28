@@ -100,11 +100,12 @@ public class UserService {
 			updateUserForm.setEnabled(String.valueOf(map.get("enabled")));
 		}
 	}
-	
+
 	/**
 	 * ユーザ情報を１件更新します。
 	 *
-	 * <p>呼び出し元はBooleanの戻り値にて、処理の結果を判定することができます。
+	 * <p>
+	 * 呼び出し元はBooleanの戻り値にて、処理の結果を判定することができます。
 	 *
 	 * @param userData ユーザ情報(null不可)
 	 * @return 正常終了の場合はtrue, その他の場合はfalse
@@ -113,12 +114,12 @@ public class UserService {
 		UserData userData = refillToData(userDataForm);
 		try {
 			// パスワードが空文字であるかを判定
-			if(userData.getPassword().isBlank()) {
+			if (userData.getPassword().isBlank()) {
 				userRepository.updateWithoutPassword(userData);
 			} else {
 				userRepository.updateWithPassword(userData);
 			}
-		} catch(IncorrectResultSizeDataAccessException e) {
+		} catch (IncorrectResultSizeDataAccessException e) {
 			return false;
 		}
 		return true;
@@ -127,7 +128,9 @@ public class UserService {
 	/**
 	 * UpdateUserFormをTaskDataへ変換します。
 	 *
-	 * <p><strong>このメソッドは入力チェックを実施したうえで呼び出すこと</strong>
+	 * <p>
+	 * <strong>このメソッドは入力チェックを実施したうえで呼び出すこと</strong>
+	 * 
 	 * @param updateUserForm 入力データ(null不可)
 	 * @return userData ユーザ情報
 	 */
@@ -143,5 +146,44 @@ public class UserService {
 		userData.setEnabled(isEnabled);
 
 		return userData;
+	}
+
+	/**
+	 * ユーザ情報を１件削除します。
+	 *
+	 * <p>
+	 * 呼び出し元はBooleanの戻り値にて、処理の結果を判定することができます。
+	 *
+	 * @param id ユーザID(null不可)
+	 * @return 正常終了の場合はtrue, その他の場合はfalse
+	 */
+	public boolean deleteOne(String userId) {
+		try {
+			userRepository.delete(userId);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 選択されたユーザ情報を全件削除します。
+	 *
+	 * <p>
+	 * 呼び出し元はBooleanの戻り値にて、処理の結果を判定することができます。
+	 *
+	 * @param users カンマ区切りのユーザID(null不可)
+	 * @return 正常終了の場合はtrue, その他の場合はfalse
+	 */
+	public boolean deleteAll(String users) {
+		String[] userIds = users.split(",");
+		for (String userId : userIds) {
+			try {
+				userRepository.delete(userId);
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

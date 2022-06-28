@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -32,20 +33,25 @@ public class UserRepository {
 
 	/** SQL 全件取得（ユーザID昇順） */
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user_m order by user_id";
-	
+
 	/** SQL 1件取得（ユーザID昇順） */
 	private static final String SQL_SELECT_ONE = "SELECT * FROM user_m WHERE user_id =:userId";
 
-	/**SQL　１件追加*/
+	/** SQL １件追加 */
 	private static final String SQL_INSERT_ONE = "INSERT INTO user_m (user_id, encrypted_password, user_name, role, enabled) VALUES(:userId,:encrypted_password ,:user_name,:role, true);";
-	
-	/**SQL　１件更新*/
+
+	/** SQL １件更新 */
 	private static final String SQL_UPDATE_ONE = "UPDATE user_m SET encrypted_password = :password, user_name = :username, role = :role, enabled = :enabled WHERE user_id = :userid;";
-	
-	/**SQL　１件更新(パスワードなし)*/
+
+	/** SQL １件更新(パスワードなし) */
 	private static final String SQL_UPDATE_NULL_PASSWORD = "UPDATE user_m SET user_name = :username, role = :role, enabled = :enabled WHERE user_id = :userid;";
-	
-	
+
+	/** SQL １件削除 */
+	private static final String SQL_DELETE_ONE = "DELETE FROM user_m WHERE user_id = :userid";
+
+	/** 予測更新件数(ハードコーティング防止用） */
+	private static final int EXPECTED_UPDATE_COUNT = 1;
+
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
 	@Autowired
@@ -66,7 +72,7 @@ public class UserRepository {
 		List<Map<String, Object>> resultList = jdbc.queryForList(SQL_SELECT_ALL, params);
 		return resultList;
 	}
-	
+
 	/**
 	 * 指定のユーザを取得します。
 	 *
@@ -80,15 +86,16 @@ public class UserRepository {
 		List<Map<String, Object>> resultList = jdbc.queryForList(SQL_SELECT_ONE, params);
 		return resultList;
 	}
-	
+
 	/**
 	 * ユーザ情報を1件登録します
-	 * <p>更新件数が異常な場合は例外が発生します
+	 * <p>
+	 * 更新件数が異常な場合は例外が発生します
 	 * 
 	 * @exception IncorrtionResultSizeDataAccessException 更新件数が異常な場合
 	 * @param userData ユーザ情報(null不可)
 	 * @ruturn 更新件数
-	 * */
+	 */
 	public int insert(UserData userData) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", userData.getUserId());
@@ -96,41 +103,54 @@ public class UserRepository {
 		params.put("encrypted_password", password);
 		params.put("user_name", userData.getUser_name());
 		params.put("role", userData.getRole());
-		
+
 		// ユーザ情報の追加処理を実行
 		int result = jdbc.update(SQL_INSERT_ONE, params);
-		
+
+		if (result != EXPECTED_UPDATE_COUNT) {
+			// 更新件数が異常な場合
+			throw new IncorrectResultSizeDataAccessException("更新に失敗しました", EXPECTED_UPDATE_COUNT);
+		}
+
 		return result;
 	}
-	
+
 	/**
 	 * ユーザ情報を1件更新します
-	 * <p>パスワードなし
-	 * <p>更新件数が異常な場合は例外が発生します
+	 * <p>
+	 * パスワードなし
+	 * <p>
+	 * 更新件数が異常な場合は例外が発生します
 	 * 
 	 * @exception IncorrtionResultSizeDataAccessException 更新件数が異常な場合
 	 * @param userData ユーザ情報(null不可)
 	 * @ruturn 更新件数
-	 * */
+	 */
 	public int updateWithoutPassword(UserData userData) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userid", userData.getUserId());
 		params.put("username", userData.getUser_name());
 		params.put("role", userData.getRole());
 		params.put("enabled", userData.isEnabled());
-		
+
 		int result = jdbc.update(SQL_UPDATE_NULL_PASSWORD, params);
+
+		if (result != EXPECTED_UPDATE_COUNT) {
+			// 更新件数が異常な場合
+			throw new IncorrectResultSizeDataAccessException("更新に失敗しました", EXPECTED_UPDATE_COUNT);
+		}
 		return result;
 	}
-	
+
 	/**
 	 * ユーザ情報を1件更新します
-	 * <p>更新件数が異常な場合は例外が発生します
+	 * <p>
+	 * 更新件数が異常な場合は例外が発生します
 	 * 
 	 * @exception IncorrtionResultSizeDataAccessException 更新件数が異常な場合
 	 * @param userData ユーザ情報(null不可)
 	 * @ruturn 更新件数
-	 * */
+	 */
 	public int updateWithPassword(UserData userData) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userid", userData.getUserId());
@@ -139,9 +159,34 @@ public class UserRepository {
 		params.put("username", userData.getUser_name());
 		params.put("role", userData.getRole());
 		params.put("enabled", userData.isEnabled());
-		
+
 		// ユーザ情報の追加処理を実行
 		int result = jdbc.update(SQL_UPDATE_ONE, params);
+
+		if (result != EXPECTED_UPDATE_COUNT) {
+			// 更新件数が異常な場合
+			throw new IncorrectResultSizeDataAccessException("更新に失敗しました", EXPECTED_UPDATE_COUNT);
+		}
 		return result;
+	}
+
+	/**
+	 * ユーザ情報を１件削除します。
+	 * 
+	 * <p>
+	 * 更新件数が異常な場合は例外が発生します。
+	 * 
+	 * @param userId ユーザID
+	 * @return
+	 */
+	public void delete(String userId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userid", userId);
+
+		int updateRow = jdbc.update(SQL_DELETE_ONE, params);
+		if (updateRow != EXPECTED_UPDATE_COUNT) {
+			// 更新件数が異常な場合
+			throw new IncorrectResultSizeDataAccessException("更新に失敗しました", EXPECTED_UPDATE_COUNT);
+		}
 	}
 }

@@ -1,0 +1,69 @@
+delete.html
+アクセスできるユーザー
+権
+システム プロパティ
+種類
+HTML
+サイズ
+2 KB
+使用容量
+2 KB
+パス
+一括削除
+オーナー
+権藤俊
+最終更新
+2022/06/24（権藤俊 さん）
+作成日
+2022/06/27
+説明なし
+閲覧者はダウンロード可
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<div th:replace="common :: common-script"></div>
+<div th:replace="common :: common-head"></div>
+
+<script type="text/javascript" src="../static/js/index.js"></script>
+
+<body>
+
+	<div th:replace="common :: common-admin-nav"></div>
+
+	<!-- コンテンツ -->
+	<div class="container text-left">
+		<div class="content-box">
+
+			<h1>ユーザ一括削除</h1>
+			<div class="alert alert-success" role="alert" th:if="${message}" th:text="${message}"></div>
+			<div class="alert alert-danger" role="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+
+			<form class="col" method="post" th:action="@{/user/delete/bulk}">
+				<table class="table table-borderless table-responsive">
+					<tr>
+						<th class="table-dark"></th>
+						<th class="table-dark">ユーザID(メールアドレス)</th>
+						<th class="table-dark">ユーザ名</th>
+						<th class="table-dark">アカウント有効性</th>
+						<th class="table-dark">権限</th>
+						<th class="table-dark"></th>
+					</tr>
+					<tr th:each="user : ${userEntity.userlist}" th:object="${user}">
+						<td class="table-light">
+							<input class="form-check-input" type="checkbox" name="users" th:value="*{userId}">
+						</td>
+						<td class="table-light" th:text="*{userId}"></td>
+						<td class="table-light" th:text="*{user_name}"></td>
+						<td class="table-light" th:text="*{enabled}"></td>
+						<td class="table-light" th:text="*{role}"></td>
+						<td class="table-light">
+					</tr>
+				</table>
+				<button type="submit" class="btn btn-danger">一括削除</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
