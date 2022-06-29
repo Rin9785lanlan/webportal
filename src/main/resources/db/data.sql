@@ -17,3 +17,13 @@ VALUES('hanako@xxx.co.jp', '$2a$10$yLURcbhXoVslVn5I0yQr3eBu088EP1XRfyYXpjGCEt993
 /* ユーザマスタのデータ（一般権限） PASS:hcs2022 */
 INSERT INTO user_m (user_id, encrypted_password, user_name, role, enabled)
 VALUES('goro@xxx.co.jp', '$2a$10$yLURcbhXoVslVn5I0yQr3eBu088EP1XRfyYXpjGCEt993zbVmbjES', '情報五郎', 'ROLE_GENERAL', true);
+
+/* プロフィールマスタのデータ（ADMIN権限) */
+INSERT INTO profile_m (user_id, user_name, qualification, nickname, self_comment)
+VALUES('taro@xxx.co.jp', '情報太郎', '基本情報処理技術者/応用情報処理技術者/情報処理安全確保支援士', 'たろーせんせー', '担任です。よろしくお願いします。');
+/* プロフィールマスタのデータ（上位権限） */
+INSERT INTO profile_m (user_id, user_name, qualification, nickname, self_comment)
+VALUES('hanako@xxx.co.jp', '情報花子', 'Python3 基礎認定', '花子さん', 'こんにちは。よろしくおねがいします。');
+/* プロフィールマスタのデータ（一般権限） */
+INSERT INTO profile_m (user_id, user_name, qualification, nickname, self_comment)
+VALUES('goro@xxx.co.jp', '情報五郎', 'まだ取得していません。', 'ごろーちゃん', '基本情報取得に目指して頑張ります！！');

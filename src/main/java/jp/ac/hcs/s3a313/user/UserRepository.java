@@ -49,6 +49,9 @@ public class UserRepository {
 	/** SQL １件削除 */
 	private static final String SQL_DELETE_ONE = "DELETE FROM user_m WHERE user_id = :userid";
 
+	/** SQL 1件追加 プロフィール */
+	private static final String SQL_INSERT_PROFILE = "INSERT INTO profile_m(user_id, user_name, qualification, nickname, self_comment) VALUES(:userId, :userName, :qualification, :nickname, :selfComment)";
+
 	/** 予測更新件数(ハードコーティング防止用） */
 	private static final int EXPECTED_UPDATE_COUNT = 1;
 
@@ -111,6 +114,8 @@ public class UserRepository {
 			// 更新件数が異常な場合
 			throw new IncorrectResultSizeDataAccessException("更新に失敗しました", EXPECTED_UPDATE_COUNT);
 		}
+		
+		execute(userData.getUserId(), userData.getUser_name());
 
 		return result;
 	}
@@ -189,4 +194,14 @@ public class UserRepository {
 			throw new IncorrectResultSizeDataAccessException("更新に失敗しました", EXPECTED_UPDATE_COUNT);
 		}
 	}
+
+	private void execute(String user_id,String user_name) {
+	        Map <String,Object> params = new HashMap<>();
+			params.put("userId", user_id);
+			params.put("userName", user_name);
+			params.put("qualification", "まだ取得していません");
+			params.put("nickname", "名無しさん");
+			params.put("selfComment", "よろしくお願いします。");
+			jdbc.update(SQL_INSERT_PROFILE,params);
+		}
 }

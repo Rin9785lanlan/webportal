@@ -4,6 +4,8 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +23,9 @@ public class TaskController {
 	 * @return タスク管理画面へのパス(null不可)
 	 */
 	@PostMapping("/task")
-	public String getTask(Model model) {
+	public String getTask(@AuthenticationPrincipal UserDetails user, Model model) {
 		// 結果を取得
-		TaskEntity taskEntity = taskService.selectAll("user");
+		TaskEntity taskEntity = taskService.selectAll(user.getUsername());
 		// 結果を画面に設定
 		model.addAttribute("taskEntity", taskEntity);
 
@@ -40,10 +42,10 @@ public class TaskController {
 	 * @return タスク管理画面へのパス(null不可)
 	 */
 	@PostMapping("/task/insert")
-	public String addTask(@RequestParam("title") String title, @RequestParam("limit") String limit, Principal principal,
+	public String addTask(@AuthenticationPrincipal UserDetails user,@RequestParam("title") String title, @RequestParam("limit") String limit, Principal principal,
 			Model model) {
 		// 結果をDBに登録
-		TaskEntity taskEntity = taskService.save("user",title,limit);
+		TaskEntity taskEntity = taskService.save(user.getUsername(),title,limit);
 		// 結果を画面に設定
 		model.addAttribute("taskEntity", taskEntity);
 		
@@ -51,9 +53,9 @@ public class TaskController {
 	}
 	
 	@PostMapping("/task/complate")
-	public String updateTask(@RequestParam("id") String taskId, Model model) {
+	public String updateTask(@AuthenticationPrincipal UserDetails user,@RequestParam("id") String taskId, Model model) {
 		//表の更新
-		TaskEntity taskEntity = taskService.update(taskId,"user");
+		TaskEntity taskEntity = taskService.update(taskId,user.getUsername());
 		// 結果を画面に設定
 		model.addAttribute("taskEntity", taskEntity);
 		
@@ -61,9 +63,9 @@ public class TaskController {
 	}
 	
 	@PostMapping("/task/delete")
-	public String deleteTask(@RequestParam("id") String taskId, Model model) {
+	public String deleteTask(@AuthenticationPrincipal UserDetails user,@RequestParam("id") String taskId, Model model) {
 		//表の更新
-		TaskEntity taskEntity = taskService.delete(taskId,"user");
+		TaskEntity taskEntity = taskService.delete(taskId,user.getUsername());
 		// 結果を画面に設定
 		model.addAttribute("taskEntity", taskEntity);
 		

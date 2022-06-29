@@ -19,3 +19,12 @@ CREATE TABLE IF NOT EXISTS user_m (
     role VARCHAR(50),
     enabled BOOLEAN
 );
+
+/* プロフィールマスタ */
+CREATE TABLE IF NOT EXISTS profile_m (
+	user_id VARCHAR(50) PRIMARY KEY,
+	user_name VARCHAR(50),
+	qualification VARCHAR(255),
+	nickname VARCHAR(50),
+	self_comment VARCHAR(100)
+); 

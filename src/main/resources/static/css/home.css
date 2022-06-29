@@ -88,3 +88,12 @@ h1 {
 .title-font {
 	color: #64C016;
 }
+
+.content-profile {
+	min-width: 250px;
+	margin: 5px;
+	padding: 20px;
+	border-radius: 150px;
+	background-color: #FFFFE080;
+	border: 1px solid #C7C7C7;
+}
