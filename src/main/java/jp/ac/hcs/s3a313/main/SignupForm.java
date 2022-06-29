@@ -32,7 +32,4 @@ public class SignupForm {
 	@Length(min = 2, max = 50, message = "{length_check}")
 	private String username;
 
-	/** 権限 */
-	@NotBlank(message = "{require_chaek}")
-	private String role;
 }

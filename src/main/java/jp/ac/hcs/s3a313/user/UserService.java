@@ -42,7 +42,6 @@ public class UserService {
 		} catch (QueryTimeoutException e) {
 			// 0を設定
 			resultSet = 0;
-
 		}
 		return resultSet;
 	}
