@@ -63,6 +63,7 @@
 
 			<!--編集モード-->
 			<div class="edit_mode input-form">
+			<form method="post" th:action="@{/profile}">
 				<div class="row">
 					<div>
 						<a href="">キャンセル</a>
@@ -112,7 +113,6 @@
 					</div>
 				</div>
 				<br>
-				<form method="get" th:action="@{/profile}">
 					<button type="submit" class="btn btn-success btnx-lime-non">更新する</button>
 				</form>
 			</div>

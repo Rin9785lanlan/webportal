@@ -26,8 +26,10 @@ public class ProfileService {
 		}
 		return profileData;
 	}
+	
 	public int updateOne(ProfileForm form) {
 		int resultSet;
+		System.out.println(form);
 		// ユーザ情報の設定
 		ProfileData addData = new ProfileData();
 		addData.setUser_id(form.getUser_id());
@@ -37,7 +39,7 @@ public class ProfileService {
 		addData.setComment(form.getComment());
 		
 		try {
-			resultSet = ProfileRepository.updata(addData);
+			resultSet = profileRepository.updateOne(addData);
 		} catch (QueryTimeoutException e) {
 			// 0を設定
 			resultSet = 0;
