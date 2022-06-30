@@ -3,66 +3,120 @@
 
 <div th:replace="common :: common-script"></div>
 <div th:replace="common :: common-head"></div>
+<script type="text/javascript" th:src="@{/js/hidden.js}"></script>
 
 <body class="light-mode">
 	<!-- common header bg-danger managed-link -->
 	<div th:replace="common :: common-nav"></div>
 
-	<!-- contents -->
+	<!-- show_contents -->
 	<div class="container" th:object="${userProfile}">
 		<div class="content-box">
-			<h2><span th:text="*{nickname}"></span>のプロフィール</h2>
+			<h2>
+				<span th:text="*{nickname}"></span>のプロフィール
+			</h2>
 
-			<div class="input-form">
-			<div class="row">
-				<div class="col-md-6">
-				<div class="content-profile">
-					<label for="user_id"><strong>ユーザID(メールアドレス)</strong></label>
-					<hr>
-					<p class="view-mail" th:text="*{user_id}"></p>
-					<input type="hidden" name="user_id" th:value="*{user_id}" th:field="*{user_id}">
-				</div>
-				</div>
-				<div class="col-md-6">
-				<div class="content-profile">
-					<label for="user_name"><strong>ユーザ名</strong></label>
-					<hr>
-					<p th:text="*{user_name}"></p>
-					<input type="hidden" name="user_name" th:value="*{user_name}" th:field="*{user_name}">
-				</div>
-				</div>
-				<div class="col-md-6">
-				<div class="content-profile">
-					<label for="nickname"><strong>表示名（ニックネーム）</strong></label>
-					<hr>
-					<p th:text="*{nickname}"></p>
-					<input type="hidden" name="nickname" th:value="*{nickname}" th:field="*{nickname}">
-				</div>
-				</div>
-				<div class="col-md-6">
-				<div class="content-profile">
-					<label for="qualification"><strong>取得した資格</strong></label>
-					<hr>
-					<div class="form-group input-box">
-						<input type="hidden" name="qualification" th:value="*{qualification}" th:text="*{#strings.replace(qualification, ',' ,'/')}"/>
+			<!--閲覧モード-->
+			<div class="show_mode input-form">
+				<div class="row">
+					<button class="link-style-btn" id="edit_btn">編集</button>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="user_id"><strong>ユーザID(メールアドレス)</strong></label>
+							<hr>
+							<p class="view-mail" th:text="*{user_id}"></p>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="user_name"><strong>ユーザ名</strong></label>
+							<hr>
+							<p th:text="*{user_name}"></p>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="nickname"><strong>表示名（ニックネーム）</strong></label>
+							<hr>
+							<p th:text="*{nickname}"></p>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="qualification"><strong>取得した資格</strong></label>
+							<hr>
+							<div class="form-group input-box">
+								<input type="hidden" th:value="*{qualification}"
+									th:text="*{#strings.replace(qualification, ',' ,'/')}" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="content-profile">
+							<label for="comment"><strong>自己紹介</strong></label>
+							<hr>
+							<p th:text="*{comment}"></p>
+						</div>
 					</div>
 				</div>
-				</div>
-				<div class="col-md-12">
-				<div class="content-profile">
-					<label for="comment"><strong>自己紹介</strong></label>
-					<hr>
-					<p th:text="*{comment}"></p>
-					<input type="hidden" name="comment" th:value="*{comment}" th:field="*{comment}">
+			</div>
+
+			<!--編集モード-->
+			<div class="edit_mode input-form">
+				<div class="row">
+					<div>
+						<a href="">キャンセル</a>
 					</div>
-				</div>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="user_id"><strong>ユーザID(メールアドレス)</strong></label>
+							<hr>
+							<p class="view-mail" th:text="*{user_id}"></p>
+							<input class="edit" type="hidden" name="user_id"
+								th:value="*{user_id}" th:field="*{user_id}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="user_name"><strong>ユーザ名</strong></label>
+							<hr>
+							<input class="edit" type="text" name="user_name"
+								th:value="*{user_name}" th:field="*{user_name}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="nickname"><strong>表示名（ニックネーム）</strong></label>
+							<hr>
+							<input class="edit" type="text" name="nickname"
+								th:value="*{nickname}" th:field="*{nickname}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="content-profile">
+							<label for="qualification"><strong>取得した資格</strong></label>
+							<hr>
+							<div class="form-group input-box">
+								<textarea class="edit que_text" name="qualification"
+									th:text="*{#strings.replace(qualification, ',' ,'/')}"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="content-profile">
+							<label for="comment"><strong>自己紹介</strong></label>
+							<hr>
+							<textarea class="edit" name="comment" th:value="*{comment}"
+								th:field="*{comment}"></textarea>
+						</div>
+					</div>
 				</div>
 				<br>
 				<form method="get" th:action="@{/profile}">
 					<button type="submit" class="btn btn-success btnx-lime-non">更新する</button>
 				</form>
 			</div>
-	
+
 		</div>
 	</div>
 

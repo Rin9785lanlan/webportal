@@ -97,3 +97,24 @@ h1 {
 	background-color: #FFFFE080;
 	border: 1px solid #C7C7C7;
 }
+
+.edit{
+	width:80%;
+	background-color:#FFFFFF
+}
+
+.que_text{
+	width:80%;
+	height:100px
+}
+
+button.link-style-btn{
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #0033cc;
+}
+button.link-style-btn:hover{
+  text-decoration: underline;
+  color: #002080;
+}

@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,23 +15,27 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class SignupController {
-	
+
 	private SignupService signupService;
-	
-		/**
-		 * 新規登録画面を表示する
-		 * @param model
-		 * @return 新規登録画面
-		 */
-		@GetMapping("/signup")
-		public String getLogin(SignupForm SignupForm ,Model model) {
-			model.addAttribute("signupForm", SignupForm);
-			return "signup";
-		}
-		
-		@PostMapping("/signup/insert")
-		public String addUser(@ModelAttribute @Validated SignupForm form, Principal principal,
+
+	/**
+	 * 新規登録画面を表示する
+	 * 
+	 * @param model
+	 * @return 新規登録画面
+	 */
+	@GetMapping("/signup")
+	public String getLogin(SignupForm SignupForm, Model model) {
+		model.addAttribute("signupForm", SignupForm);
+		return "signup";
+	}
+
+	@PostMapping("/signup/insert")
+	public String addUser(@ModelAttribute @Validated SignupForm form, BindingResult bindResult, Principal principal,
 			Model model) {
+		if (bindResult.hasErrors()) {
+			return "login";
+		}
 		int isSuceess = signupService.insertOne(form);
 		if (isSuceess == 1) {
 			model.addAttribute("message", "ユーザを登録しました");
