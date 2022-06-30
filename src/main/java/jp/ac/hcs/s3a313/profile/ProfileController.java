@@ -39,14 +39,7 @@ public class ProfileController {
 	@GetMapping("/profile")
 	public String editProfile(@ModelAttribute @Validated ProfileForm userProfile) {
 		// 結果を取得
-		int isSuceess = userService.insertOne(form);
-		if (isSuceess == 1) {
-			model.addAttribute("message", "ユーザを登録しました");
-		} else {
-			model.addAttribute("errorMessage", "ユーザ登録に失敗しました。操作をやり直してください");
-		}
-		return getUserList(model);
-	}
+		profileService.updateOne(userProfile);
 		return "/change";
 	}
 }

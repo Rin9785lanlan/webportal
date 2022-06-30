@@ -26,4 +26,22 @@ public class ProfileService {
 		}
 		return profileData;
 	}
+	public int updateOne(ProfileForm form) {
+		int resultSet;
+		// ユーザ情報の設定
+		ProfileData addData = new ProfileData();
+		addData.setUser_id(form.getUser_id());
+		addData.setUser_name(form.getUser_name());
+		addData.setNickname(form.getNickname());
+		addData.setQualification(form.getQualification());
+		addData.setComment(form.getComment());
+		
+		try {
+			resultSet = ProfileRepository.updata(addData);
+		} catch (QueryTimeoutException e) {
+			// 0を設定
+			resultSet = 0;
+		}
+		return resultSet;
+	}
 }
