@@ -43,10 +43,10 @@ public class TaskController {
 	 * @return タスク管理画面へのパス(null不可)
 	 */
 	@PostMapping("/task/insert")
-	public String addTask(@AuthenticationPrincipal UserDetails user,@RequestParam("title") String title, @RequestParam("limit") String limit, Principal principal,
+	public String addTask(@AuthenticationPrincipal UserDetails user, @RequestParam("title") String title, @RequestParam("limit") String limit, Principal principal,
 			Model model) {
 		// 結果をDBに登録
-		TaskEntity taskEntity = taskService.save(user.getUsername(),title,limit);
+		TaskEntity taskEntity = taskService.save(user.getUsername(), title, limit);
 		// 結果を画面に設定
 		model.addAttribute("taskEntity", taskEntity);
 		
@@ -54,7 +54,7 @@ public class TaskController {
 	}
 	
 	@PostMapping("/task/complate")
-	public String updateTask(@AuthenticationPrincipal UserDetails user,@RequestParam("id") String taskId, Model model) {
+	public String updateTask(@AuthenticationPrincipal UserDetails user, @RequestParam("id") String taskId, Model model) {
 		//表の更新
 		TaskEntity taskEntity = taskService.update(taskId,user.getUsername());
 		// 結果を画面に設定
@@ -64,9 +64,9 @@ public class TaskController {
 	}
 	
 	@PostMapping("/task/delete")
-	public String deleteTask(@AuthenticationPrincipal UserDetails user,@RequestParam("id") String taskId, Model model) {
+	public String deleteTask(@AuthenticationPrincipal UserDetails user, @RequestParam("id") String taskId, Model model) {
 		//表の更新
-		TaskEntity taskEntity = taskService.delete(taskId,user.getUsername());
+		TaskEntity taskEntity = taskService.delete(taskId, user.getUsername());
 		// 結果を画面に設定
 		model.addAttribute("taskEntity", taskEntity);
 		

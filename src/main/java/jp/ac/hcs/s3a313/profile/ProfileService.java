@@ -27,6 +27,13 @@ public class ProfileService {
 		return profileData;
 	}
 	
+	/**
+	 * プロフィール情報を1件更新します
+	 *
+	 * @param ProfileForm プロフィールデータ(null不可)
+	 * 
+	 * @return プロフィールデータ(null不可)
+	 */
 	public boolean updateOne(ProfileForm form) {
 		boolean resultSet;
 		// ユーザ情報の設定

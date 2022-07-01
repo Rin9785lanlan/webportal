@@ -63,6 +63,13 @@ public class ProfileRepository {
 		return data;
 	}
 
+	/**
+	 * ProfileテーブルからユーザIDをキーにデータを1件更新する.
+	 * 
+	 * @param user_id 更新するユーザID
+	 * @return ProfileEntity
+	 * @throws DataAccessException
+	 */
 	public boolean updateOne(ProfileData data) throws DataAccessException {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", data.getUser_id());

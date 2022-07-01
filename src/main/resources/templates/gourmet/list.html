@@ -21,8 +21,8 @@
 			<div th:each="shop : ${shopEntity.shops}">
 				<table class="table table-light">
 					<tr>
-						<td><img class="shopimage" th:src="${shop.image}"></td>
-						<td><a th:text="${shop.shopname}" th:href="${shop.url}"></a></td>
+						<td><img class="shopimage" th:src="${shop.image}"><br>
+						<a th:text="${shop.shopname}" th:href="${shop.url}"></a></td>
 					</tr>
 				</table>
 			</div>

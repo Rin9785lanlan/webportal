@@ -32,7 +32,7 @@ public class TaskRepository {
 	private static final String SQL_SELECT_ALL = "SELECT * FROM task_t WHERE user_id =:userId order by limitday";
 
 	/** SQL １件追加 */
-	private static final String SQL_INSERT_ONE = "INSERT INTO task_t(id,user_id,title,limitday,complate) VALUES ((SELECT MAX(id) + 1 FROM task_t),:userId, :title, :limitday, false)";
+	private static final String SQL_INSERT_ONE = "INSERT INTO task_t(id, user_id, title, limitday, complate) VALUES ((SELECT MAX(id) + 1 FROM task_t), :userId, :title, :limitday, false)";
 
 	/** SQL １件削除 */
 	private static final String SQL_DELETE_ONE = "DELETE FROM task_t WHERE id = :id";

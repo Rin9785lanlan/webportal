@@ -30,7 +30,7 @@ public class ProfileController {
 
 		return "profile/Profile";
 	}
-	
+
 	/**
 	 * プロフィール画面を表示します。
 	 *
@@ -45,7 +45,7 @@ public class ProfileController {
 
 		return "profile/Profile";
 	}
-	
+
 	/**
 	 * プロフィール画面を編集します。
 	 *
@@ -53,9 +53,9 @@ public class ProfileController {
 	 * @return タスク管理画面へのパス(null不可)
 	 */
 	@PostMapping("/profile")
-	public String editProfile(@ModelAttribute @Validated ProfileForm userProfile,Model model) {
+	public String editProfile(@ModelAttribute @Validated ProfileForm userProfile, Model model) {
 		// 結果を取得
 		profileService.updateOne(userProfile);
-		return getProfile(userProfile.getUser_id(),model);
+		return getProfile(userProfile.getUser_id(), model);
 	}
 }

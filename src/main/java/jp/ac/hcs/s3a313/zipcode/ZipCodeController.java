@@ -28,7 +28,7 @@ public class ZipCodeController {
 	public String getZipCode(@RequestParam("zipcode") String zipcode,
 			Principal principal, Model model) {
 		ZipCodeEntity zipCodeEntity = zipCodeService.execute(zipcode);
-		model.addAttribute("results",zipCodeEntity);
+		model.addAttribute("results", zipCodeEntity);
 		return "zipcode/result";
 	}
 }

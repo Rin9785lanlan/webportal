@@ -33,6 +33,13 @@ public class GourmetService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	/**
+	 * APIから情報を取得する処理
+	 * <p>受け取った情報をもとにAPIにリクエストを送信します
+	 * 
+	 * @param shopname, large_service_area
+	 * @return shopEntity
+	 * */
 	public ShopEntity execute(String shopname, String large_service_area) {
 
 		String json = request(shopname, large_service_area);
@@ -43,6 +50,11 @@ public class GourmetService {
 
 		return shopEntity;
 	}
+	
+	/**
+	 * jsonデータを加工する処理
+	 * 
+	 * */
 	private void convert(String shopname, String json, ShopEntity shopEntity) {
 		
 		shopEntity.setSearchWord(shopname);
@@ -71,6 +83,11 @@ public class GourmetService {
 		return shopData;
 	}
 
+	/**
+	 * APIにリクエストを送信するし、レスポンスを受け取る処理
+	 * 
+	 * @return json
+	 * */
 	private String request(String shopname, String large_service_area) {
 		// 外部APIアクセス
 		String json = restTemplate.getForObject(URL, String.class, API_KEY, shopname, large_service_area);

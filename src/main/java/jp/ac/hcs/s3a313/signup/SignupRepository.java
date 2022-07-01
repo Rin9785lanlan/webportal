@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public class SignupRepository {
 
 	/** SQL １件追加 */
-	private static final String SQL_INSERT_ONE = "INSERT INTO user_m (user_id, encrypted_password, user_name, role, enabled) VALUES(:userId,:encrypted_password ,:user_name,:role, true)";
+	private static final String SQL_INSERT_ONE = "INSERT INTO user_m (user_id, encrypted_password, user_name, role, enabled) VALUES(:userId, :encrypted_password, :user_name, :role, true)";
 
 	/** 予測更新件数(ハードコーティング防止用） */
 	private static final int EXPECTED_UPDATE_COUNT = 1;
