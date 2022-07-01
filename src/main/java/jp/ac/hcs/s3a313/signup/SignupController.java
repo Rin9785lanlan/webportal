@@ -1,4 +1,4 @@
-package jp.ac.hcs.s3a313.main;
+package jp.ac.hcs.s3a313.signup;
 
 import java.security.Principal;
 
@@ -25,7 +25,7 @@ public class SignupController {
 	 * @return 新規登録画面
 	 */
 	@GetMapping("/signup")
-	public String getLogin(SignupForm SignupForm, Model model) {
+	public String getSign(SignupForm SignupForm, Model model) {
 		model.addAttribute("signupForm", SignupForm);
 		return "signup";
 	}
@@ -33,15 +33,15 @@ public class SignupController {
 	@PostMapping("/signup/insert")
 	public String addUser(@ModelAttribute @Validated SignupForm form, BindingResult bindResult, Principal principal,
 			Model model) {
+		String return_url = "signup";
 		if (bindResult.hasErrors()) {
-			return "login";
-		}
-		int isSuceess = signupService.insertOne(form);
-		if (isSuceess == 1) {
-			model.addAttribute("message", "ユーザを登録しました");
-		} else {
 			model.addAttribute("errorMessage", "ユーザ登録に失敗しました。操作をやり直してください");
 		}
-		return "login";
+		
+		int isSuceess = 0;
+		if (isSuceess == 0) {
+			model.addAttribute("errorMessage", "ユーザ登録に失敗しました。操作をやり直してください");
+		}
+		return return_url;
 	}
 }

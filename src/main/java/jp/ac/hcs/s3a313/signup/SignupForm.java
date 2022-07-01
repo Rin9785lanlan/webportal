@@ -1,4 +1,4 @@
-package jp.ac.hcs.s3a313.main;
+package jp.ac.hcs.s3a313.signup;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

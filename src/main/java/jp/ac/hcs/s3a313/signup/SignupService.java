@@ -1,4 +1,4 @@
-package jp.ac.hcs.s3a313.main;
+package jp.ac.hcs.s3a313.signup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.QueryTimeoutException;
@@ -18,13 +18,13 @@ public class SignupService {
 		addData.setUser_name(form.getUsername());
 		addData.setPassword(form.getPassword());
 		addData.setRole("ROLE_GENERAL");
+		System.out.println(addData);
 		try {
 			resultSet = signupRepository.insert(addData);
 		} catch (QueryTimeoutException e) {
 			// 0を設定
 			resultSet = 0;
 		}
-		System.out.println(addData);
 		return resultSet;
 	}
 }
