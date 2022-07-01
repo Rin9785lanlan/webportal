@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -62,7 +63,7 @@ public class ProfileRepository {
 		return data;
 	}
 
-	public int updateOne(ProfileData data) throws DataAccessException {
+	public boolean updateOne(ProfileData data) throws DataAccessException {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", data.getUser_id());
 		params.put("name", data.getUser_name());
@@ -70,13 +71,10 @@ public class ProfileRepository {
 		params.put("nickname", data.getNickname());
 		params.put("comment", data.getComment());
 		int result = jdbc.update(SQL_UPDATE_ONE, params);
-		System.out.println(params);
-
-		// if (result != EXPECTED_UPDATE_COUNT) {
-		// 更新件数が異常な場合
-		// throw new IncorrectResultSizeDataAccessException("更新に失敗しました",
-		// EXPECTED_UPDATE_COUNT);
-		// }
-		return result;
+		if (result != EXPECTED_UPDATE_COUNT) {
+			// 更新件数が異常な場合
+			throw new IncorrectResultSizeDataAccessException("更新に失敗しました", EXPECTED_UPDATE_COUNT);
+	 }
+		return true;
 	}
 }

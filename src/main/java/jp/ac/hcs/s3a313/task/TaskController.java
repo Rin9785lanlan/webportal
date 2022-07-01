@@ -1,5 +1,6 @@
 package jp.ac.hcs.s3a313.task;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +81,10 @@ public class TaskController {
 	 * @param principal ログイン中のユーザ情報を格納(null不可)
 	 * @param model Viewに値を渡すオブジェクト(null不可)
 	 * @return CSVファイル
+	 * @throws IOException 
 	 */
 	@PostMapping("/task/csv")
-	public ResponseEntity<byte[]> getTaskCsv(Principal principal, Model model) {
+	public ResponseEntity<byte[]> getTaskCsv(Principal principal, Model model) throws IOException {
 		// CSVファイルをサーバ上に作成
 		ResponseEntity<byte[]> csv = taskService.taskListCsvOut(principal.getName());
 		// CSVファイルを端末へ送信

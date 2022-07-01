@@ -206,8 +206,9 @@ public class TaskService {
 	 * 条件に合致するタスクがない場合は、空のファイルが出力されます。
 	 * 
 	 * @param userId ユーザID(null不可)
+	 * @throws IOException 
 	 */
-	public ResponseEntity<byte[]> taskListCsvOut(String userId) {
+	public ResponseEntity<byte[]> taskListCsvOut(String userId) throws IOException {
 
 		taskRepository.fileOut(userId);
 

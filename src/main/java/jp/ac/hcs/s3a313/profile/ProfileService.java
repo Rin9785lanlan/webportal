@@ -27,9 +27,8 @@ public class ProfileService {
 		return profileData;
 	}
 	
-	public int updateOne(ProfileForm form) {
-		int resultSet;
-		System.out.println(form);
+	public boolean updateOne(ProfileForm form) {
+		boolean resultSet;
 		// ユーザ情報の設定
 		ProfileData addData = new ProfileData();
 		addData.setUser_id(form.getUser_id());
@@ -42,7 +41,7 @@ public class ProfileService {
 			resultSet = profileRepository.updateOne(addData);
 		} catch (QueryTimeoutException e) {
 			// 0を設定
-			resultSet = 0;
+			resultSet = false;
 		}
 		return resultSet;
 	}
